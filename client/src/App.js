@@ -15,19 +15,18 @@ const App = () => {
 
     socket.current.onopen = () => {
       setConnected(true);
-      const connect = {
+      const connect = [{
         event: 'connection',
-        username,
-        id: Date.now(),
-      }
+        username
+      }]
       socket.current.send(JSON.stringify(connect));
     }
-    socket.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages(prev => [message, ...prev]);
+    socket.current.onmessage = ({data}) => {
+      setMessages(prev => [...JSON.parse(data), ...prev]);
     }
     socket.current.onclose = () => {
       console.log('socket closed');
+      setConnected(false);
     }
     socket.current.onerror = () => {
       console.log('socket closed')

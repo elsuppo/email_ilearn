@@ -1,5 +1,5 @@
 
-const MessageRow = ({ sender, recipient, subject, message, date, username }) => {
+const MessageRow = ({ sender, recipient, subject, messageDB, date, username }) => {
 
   const openMessage = (event)  => {
     Array.from(event.target.parentNode.children).filter(child => (child.classList.contains('message')))[0].classList.toggle("d-none");
@@ -23,7 +23,7 @@ return (
             role="button"
             onClick={openMessage}>{date}</div>
           <div
-            className="message d-none text-start border-top p-4">{message}</div>
+            className="message d-none text-start border-top p-4">{messageDB}</div>
         </div>
       ) : null}
   </>

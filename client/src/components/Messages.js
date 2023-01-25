@@ -5,7 +5,7 @@ const Messages = ({ messages, username }) => {
   const messagesRows = messages.map(message => {
     return (
       <MessageItem
-        key={message.id}
+        key={message._id}
         {...message}
         username={username}
       />

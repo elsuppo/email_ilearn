@@ -4,7 +4,10 @@ const Header = ({ username, setConnected }) => {
       <p className="h6 m-0 me-3">You entered as <span className="text-success">{username}</span></p>
       <button
         className="btn btn-block btn-primary"
-        onClick={() => setConnected(false)}>Log out</button>
+        onClick={() => {
+          setConnected(false);
+          window.location.reload();
+        }}>Log out</button>
     </div>
   )
 }

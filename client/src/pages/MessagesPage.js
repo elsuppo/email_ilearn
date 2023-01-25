@@ -10,15 +10,14 @@ const MessagesPage = ({ username, socket, messages }) => {
   const [subject, setSubject] = useState('');
 
   const sendMessage = async () => {
-    const message = {
+    const message = [{
       sender: username,
       recipient,
       subject,
-      message: valueMsg,
+      messageDB: valueMsg,
       date: new Date(),
-      id: Date.now(),
       event: 'message'
-    }
+    }]
     await socket.current.send(JSON.stringify(message));
     setRecipient('');
     setSubject('');
