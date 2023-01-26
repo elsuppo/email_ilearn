@@ -27,12 +27,12 @@ const App = () => {
 
     socket.current.onmessage = async ({ data }) => {
       if (JSON.parse(data)[0]) {
-        await JSON.parse(data).map(item => {
-          setUsers(prevUsers => !prevUsers.includes(item.recipient) ? [...prevUsers, item.recipient] : [...prevUsers])
-        })
         if (JSON.parse(data)[0].event === 'error') {
           setErrors(prev => [...JSON.parse(data), ...prev]);
         } else {
+          await JSON.parse(data).map(item => {
+            setUsers(prevUsers => !prevUsers.includes(item.sender) ? [...prevUsers, item.sender] : [...prevUsers])
+          })
           setMessages(prev => [...JSON.parse(data).filter(message => message.recipient === username), ...prev]);
         }
       }
