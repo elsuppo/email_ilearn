@@ -6,7 +6,7 @@ const MessageRow = ({ sender, subject, messageDB, date }) => {
   }
 
   return (
-    <div className="row border rounded text-center">
+    <div className="row border rounded text-center" data-toggle="tooltip" data-placement="top" title="Press to read the message">
       <div
         className="col"
         role="button"
@@ -14,26 +14,15 @@ const MessageRow = ({ sender, subject, messageDB, date }) => {
       <div
         className="col"
         role="button"
-        onClick={openMessage}>{subject}</div>
+        onClick={openMessage}>{subject ? subject : '[no subject]'}</div>
       <div
         className="col"
         role="button"
-        onClick={openMessage}>{date}</div>
+        onClick={openMessage}>{`${date.slice(0, 10)}, ${date.slice(11, 16)}`}</div>
       <div
-        className="message d-none text-start border-top p-4">{messageDB}</div>
+        className="message d-none text-start border-top p-4 bg-light">{messageDB ? messageDB : '[message is empty]'}</div>
     </div>
   )
 }
-// 
 
 export default MessageRow;
-
-          // {/* {message.recipient === username ?
-          //   <>
-          //     <div onClick={event => Array.from(event.target.children)[0].classList.toggle("invisible")}>
-          //       {message.date} from {message.sender} {message.subject}
-          //       <div className="invisible">{message.message ? message.message : 'message is empty'}</div>
-          //     </div>
-          //   </>
-          //   : null
-          // } */}

@@ -26,9 +26,9 @@ wss.on('connection', function connection(ws) {
         console.log(message);
         break;
       case 'message':
-        const { sender, recipient, subject, messageDB, dateReg, event } = message;
+        const { sender, recipient, subject, messageDB, date, event } = message;
         try {
-          await MessageModel.create({ sender, recipient, subject, messageDB, dateReg, event });
+          await MessageModel.create({ sender, recipient, subject, messageDB, date, event });
           broadcastMessage();
         } catch (error) {
           console.log(error);

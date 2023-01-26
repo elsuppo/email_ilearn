@@ -11,11 +11,6 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [errors, setErrors] = useState([]);
 
-  useEffect(() => {
-    console.log(messages);
-    console.log(username);
-  })
-
   function connect() {
     socket.current = new WebSocket('ws://localhost:5000');
 
@@ -33,7 +28,6 @@ const App = () => {
         if (JSON.parse(data)[0].event === 'error') {
           setErrors(prev => [...JSON.parse(data), ...prev]);
         } else {
-          console.log('here', username);
           setMessages(prev => [...JSON.parse(data).filter(message => message.recipient === username), ...prev]);
         }
       }
