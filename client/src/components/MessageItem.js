@@ -1,33 +1,28 @@
 
-const MessageRow = ({ sender, recipient, subject, messageDB, date, username }) => {
+const MessageRow = ({ sender, subject, messageDB, date }) => {
 
-  const openMessage = (event)  => {
+  const openMessage = (event) => {
     Array.from(event.target.parentNode.children).filter(child => (child.classList.contains('message')))[0].classList.toggle("d-none");
-}
+  }
 
-return (
-  <>
-    {recipient === username ?
-      (
-        <div className="row border rounded text-center">
-          <div 
-            className="col"
-            role="button"
-            onClick={openMessage}>{sender}</div>
-          <div 
-            className="col"
-            role="button"
-            onClick={openMessage}>{subject}</div>
-          <div 
-            className="col"
-            role="button"
-            onClick={openMessage}>{date}</div>
-          <div
-            className="message d-none text-start border-top p-4">{messageDB}</div>
-        </div>
-      ) : null}
-  </>
-)
+  return (
+    <div className="row border rounded text-center">
+      <div
+        className="col"
+        role="button"
+        onClick={openMessage}>{sender}</div>
+      <div
+        className="col"
+        role="button"
+        onClick={openMessage}>{subject}</div>
+      <div
+        className="col"
+        role="button"
+        onClick={openMessage}>{date}</div>
+      <div
+        className="message d-none text-start border-top p-4">{messageDB}</div>
+    </div>
+  )
 }
 // 
 

@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
 
 import SendMessage from '../components/SendMessage';
 import Messages from '../components/Messages';
 
-const MessagesPage = ({ username, socket, messages }) => {
+const MessagesPage = ({ username, socket, messages, errors, setErrors }) => {
   const [valueMsg, setValueMsg] = useState('');
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
+
+  useEffect(() => {
+    setErrors([]);
+  }, [recipient])
 
   const sendMessage = async () => {
     const message = [{
@@ -38,6 +42,8 @@ const MessagesPage = ({ username, socket, messages }) => {
           setRecipient={setRecipient}
           subject={subject}
           setSubject={setSubject}
+          errors={errors} 
+          setErrors={setErrors}
         />
         <Messages
           messages={messages}

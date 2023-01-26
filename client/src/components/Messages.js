@@ -3,13 +3,14 @@ import MessageItem from './MessageItem';
 const Messages = ({ messages, username }) => {
 
   const messagesRows = messages.map(message => {
-    return (
-      <MessageItem
+    const { recipient } = message;
+    if (recipient === username) {
+      return (<MessageItem
         key={message._id}
         {...message}
-        username={username}
       />
-    )
+      )
+    }
   })
 
   return (
@@ -28,3 +29,4 @@ const Messages = ({ messages, username }) => {
 }
 
 export default Messages;
+

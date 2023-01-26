@@ -1,4 +1,5 @@
-const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject }) => {
+const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject, errors, setErrors }) => {
+  console.log(errors);
   return (
     <div className="p-4 d-flex justify-content-center w-25">
       <div>
@@ -13,8 +14,8 @@ const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipie
             autoComplete="on"
             value={recipient}
             onChange={e => setRecipient(e.target.value)}
-            required
           />
+          <span className="text-danger">{errors.length > 0 ? errors[0].recipient : null}</span>
         </div>
         <div className="form-outline mb-4">
           <label className="form-label">Subject</label>

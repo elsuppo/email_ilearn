@@ -27,16 +27,29 @@ wss.on('connection', function connection(ws) {
         break;
       case 'message':
         const { sender, recipient, subject, messageDB, dateReg, event } = message;
-        await MessageModel.create({ sender, recipient, subject, messageDB, dateReg, event });
-        broadcastMessage(recipient);
+        try {
+          await MessageModel.create({ sender, recipient, subject, messageDB, dateReg, event });
+          broadcastMessage();
+        } catch (error) {
+          console.log(error);
+          handleErrors(error);
+        }
         break;
     }
   })
 })
 
-async function broadcastMessage(username) {
+const handleErrors = (error) => {
+  let errors = [{ event: 'error', recipient: '' }];
+  if (error._message === 'Messages validation failed') {
+    errors[0].recipient = 'recipient is required'
+    wss.clients.forEach(client => client.send(JSON.stringify(errors)));
+  }
+}
+
+async function broadcastMessage() {
   try {
-    const lastMessage = await MessageModel.find({ recipient: username }).sort({ _id: -1 }).limit(1);
+    const lastMessage = await MessageModel.find().sort({ _id: -1 }).limit(1);
     wss.clients.forEach(client => {
       client.send(JSON.stringify(lastMessage));
     })
