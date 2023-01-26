@@ -18,12 +18,11 @@ const Login = ({ username, setUsername, connect }) => {
               className="form-control"
               value={username}
               onChange={e => setUsername(e.target.value)}
-              required
             />
           </div>
           <button
             className="btn btn-primary btn-block mb-4 w-100"
-            onClick={connect}>Login</button>
+            onClick={connect}>{username ? 'Login' : 'Login as guest'}</button>
         </div>
       </div>
     </>
@@ -31,3 +30,5 @@ const Login = ({ username, setUsername, connect }) => {
 }
 
 export default Login;
+
+// e.target.value !== '' ? setUsername(e.target.value) : setUsername(`Guest_${Math.floor(Math.random() * 100000)}`)

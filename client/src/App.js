@@ -17,8 +17,9 @@ const App = () => {
       setConnected(true);
       const connect = [{
         event: 'connection',
-        username
+        username: username ? username : `Guest_${Math.floor(Math.random() * 100000)}`
       }]
+      setUsername(connect[0].username);
       socket.current.send(JSON.stringify(connect));
     }
     socket.current.onmessage = ({data}) => {
