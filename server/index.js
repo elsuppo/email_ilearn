@@ -16,7 +16,6 @@ const wss = new ws.Server({
   port: PORT,
 }, () => console.log(`Server started on PORT ${PORT}`))
 
-
 wss.on('connection', function connection(ws) {
   ws.on('message', async function (message) {
     message = JSON.parse(message)[0];
@@ -60,7 +59,6 @@ async function broadcastMessage() {
 
 async function getAllMessages(username) {
   try {
-    // const allMessages = await MessageModel.find({ recipient: username }).sort({ _id: -1 });
     const allMessages = await MessageModel.find().sort({ _id: -1 });
     wss.clients.forEach(client => {
       client.send(JSON.stringify(allMessages));
