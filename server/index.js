@@ -22,7 +22,7 @@ wss.on('connection', function connection(ws) {
     message = JSON.parse(message)[0];
     switch (message.event) {
       case 'connection':
-        getAllMessages(message.username)
+        getAllMessages()
         console.log(message);
         break;
       case 'message':
@@ -60,7 +60,8 @@ async function broadcastMessage() {
 
 async function getAllMessages(username) {
   try {
-    const allMessages = await MessageModel.find({ recipient: username }).sort({ _id: -1 });
+    // const allMessages = await MessageModel.find({ recipient: username }).sort({ _id: -1 });
+    const allMessages = await MessageModel.find().sort({ _id: -1 });
     wss.clients.forEach(client => {
       client.send(JSON.stringify(allMessages));
     })

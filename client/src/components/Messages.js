@@ -5,10 +5,11 @@ const Messages = ({ messages, username }) => {
   const messagesRows = messages.map(message => {
     const { recipient } = message;
     if (recipient === username) {
-      return (<MessageItem
-        key={message._id}
-        {...message}
-      />
+      return (
+        <MessageItem
+          key={message._id}
+          {...message}
+        />
       )
     }
   })

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 import Login from './pages/Login';
 import Header from './components/Header';
@@ -10,6 +10,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [messages, setMessages] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [users, setUsers] = useState([]);
 
   function connect() {
     socket.current = new WebSocket('ws://localhost:5000');
@@ -23,8 +24,12 @@ const App = () => {
       setUsername(connect[0].username);
       socket.current.send(JSON.stringify(connect));
     }
-    socket.current.onmessage = ({data}) => {
+
+    socket.current.onmessage = async ({ data }) => {
       if (JSON.parse(data)[0]) {
+        await JSON.parse(data).map(item => {
+          setUsers(prevUsers => !prevUsers.includes(item.recipient) ? [...prevUsers, item.recipient] : [...prevUsers])
+        })
         if (JSON.parse(data)[0].event === 'error') {
           setErrors(prev => [...JSON.parse(data), ...prev]);
         } else {
@@ -32,16 +37,17 @@ const App = () => {
         }
       }
     }
+
     socket.current.onclose = () => {
       console.log('socket closed');
       setConnected(false);
       window.location.reload();
     }
+
     socket.current.onerror = () => {
       console.log('socket closed');
       window.location.reload();
     }
-    localStorage.setItem('user', username);
   }
 
   if (!connected) {
@@ -64,6 +70,7 @@ const App = () => {
         socket={socket}
         errors={errors}
         setErrors={setErrors}
+        users={users}
       />
     </div>
   )

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
+import { Stack } from '@mui/material';
 
 import SendMessage from '../components/SendMessage';
 import Messages from '../components/Messages';
 
-const MessagesPage = ({ username, socket, messages, errors, setErrors }) => {
+const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) => {
   const [valueMsg, setValueMsg] = useState('');
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
@@ -33,7 +34,11 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors }) => {
       <Helmet>
         <title>Send message</title>
       </Helmet>
-      <div className="d-flex justify-content-center">
+      <Stack
+      direction={{ xs: 'column', sm: 'row' }}
+      alignItems={{ xs: 'center', sm: 'start' }}
+      justifyContent="center"
+    >
         <SendMessage
           valueMsg={valueMsg}
           setValueMsg={setValueMsg}
@@ -44,12 +49,13 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors }) => {
           setSubject={setSubject}
           errors={errors} 
           setErrors={setErrors}
+          users={users}
         />
         <Messages
           messages={messages}
           username={username}
         />
-      </div>
+      </Stack>
     </>
 
   )
