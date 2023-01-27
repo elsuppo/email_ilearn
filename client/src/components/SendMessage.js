@@ -2,7 +2,6 @@ import { Autocomplete, TextField } from '@mui/material';
 
 const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject, errors, users, username }) => {
 
-  console.log(errors);
   return (
     <div className="p-4 d-flex justify-content-center w-25">
       <div>

@@ -28,13 +28,11 @@ const App = () => {
     socket.current.onmessage = async ({ data }) => {
       try {
         if (JSON.parse(data).length === 1) {
-          console.log(JSON.parse(data));
           if (JSON.parse(data)[0].event === 'error') {
             setErrors(prev => [...JSON.parse(data), ...prev]);
           } else {
             setMessages(prev => [...JSON.parse(data), ...prev]);
           }
-          
         } else {
           const allUserMessages = JSON.parse(data).allUserMessages;
           const allUsers = JSON.parse(data).allUsers;
