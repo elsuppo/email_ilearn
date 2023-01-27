@@ -1,7 +1,8 @@
 import { Autocomplete, TextField } from '@mui/material';
 
-const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject, errors, users }) => {
+const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject, errors, users, username }) => {
 
+  console.log(errors);
   return (
     <div className="p-4 d-flex justify-content-center w-25">
       <div>
@@ -17,7 +18,7 @@ const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipie
             sx={{width: 250}}
           />
           <span className="text-danger">{errors.length > 0 ? errors[0].recipient : null}</span>
-          <span className="text-danger">{!users.includes(recipient) && recipient ? 'This recipient has not used the app, but will be able to see your message the first time he visits' : null}</span>
+          <span className="text-danger">{!users.includes(recipient) && recipient && recipient !== username ? 'This recipient has not used the app, but will be able to see your message the first time he visits' : null}</span>
         </div>
         <div className="form-outline mb-4">
           <label className="form-label">Subject</label>

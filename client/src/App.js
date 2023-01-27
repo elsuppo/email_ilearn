@@ -13,7 +13,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
 
   function connect() {
-    socket.current = new WebSocket('wss://email-ilearn-server.onrender.com');
+    socket.current = new WebSocket('ws://localhost:5000/');
 
     socket.current.onopen = () => {
       setConnected(true);
@@ -26,15 +26,27 @@ const App = () => {
     }
 
     socket.current.onmessage = async ({ data }) => {
-      if (JSON.parse(data)[0]) {
-        if (JSON.parse(data)[0].event === 'error') {
-          setErrors(prev => [...JSON.parse(data), ...prev]);
+      try {
+        if (JSON.parse(data).length === 1) {
+          console.log(JSON.parse(data));
+          if (JSON.parse(data)[0].event === 'error') {
+            setErrors(prev => [...JSON.parse(data), ...prev]);
+          } else {
+            setMessages(prev => [...JSON.parse(data), ...prev]);
+          }
+          
         } else {
-          await JSON.parse(data).map(item => {
-            setUsers(prevUsers => !prevUsers.includes(item.sender) ? [...prevUsers, item.sender] : [...prevUsers])
+          const allUserMessages = JSON.parse(data).allUserMessages;
+          const allUsers = JSON.parse(data).allUsers;
+          setMessages(prev => [...allUserMessages, ...prev]);
+          allUsers.map(user => {
+            if (user.user) {
+              setUsers(prev => [...prev, user.user]);
+            }
           })
-          setMessages(prev => [...JSON.parse(data).filter(message => message.recipient === username), ...prev]);
         }
+      } catch (error) {
+        console.log(error);
       }
     }
 

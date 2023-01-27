@@ -3,6 +3,7 @@ const ws = require('ws');
 const mongoose = require('mongoose');
 
 const MessageModel = require('./MessageModel');
+const UserModel = require('./UserModel');
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,10 +20,10 @@ const wss = new ws.Server({
 wss.on('connection', function connection(ws) {
   ws.on('message', async function (message) {
     message = JSON.parse(message)[0];
+    await addNewUser(message.username);
     switch (message.event) {
       case 'connection':
-        getAllMessages(message.username);
-        console.log(message);
+        await getInfo(ws, message.username);
         break;
       case 'message':
         const { sender, recipient, subject, messageDB, date, event } = message;
@@ -31,18 +32,18 @@ wss.on('connection', function connection(ws) {
           broadcastMessage();
         } catch (error) {
           console.log(error);
-          handleErrors(error);
+          handleErrors(ws, error);
         }
         break;
     }
   })
 })
 
-const handleErrors = (error) => {
+const handleErrors = (ws, error) => {
   let errors = [{ event: 'error', recipient: '' }];
   if (error._message === 'Messages validation failed') {
     errors[0].recipient = 'recipient is required'
-    wss.clients.forEach(client => client.send(JSON.stringify(errors)));
+    ws.send(JSON.stringify(errors));
   }
 }
 
@@ -57,14 +58,24 @@ async function broadcastMessage() {
   }
 }
 
-async function getAllMessages(username) {
+async function getInfo(ws, username) {
   try {
-    const allMessages = await MessageModel.find({ recipient: username }).sort({ _id: -1 });
-    // const allMessages = await MessageModel.find().sort({ _id: -1 });
-    wss.clients.forEach(client => {
-      client.send(JSON.stringify(allMessages));
-    })
+    const allUserMessages = await MessageModel.find({ recipient: username }).sort({ _id: -1 });
+    const allUsers = await UserModel.find();
+    ws.send(JSON.stringify({allUserMessages, allUsers}));
   } catch (error) {
     console.log(error.message);
   }
+}
+
+async function addNewUser(username) {
+  await UserModel.exists({ user: username }, function (err, doc) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (!doc) {
+        UserModel.create({ user: username }) 
+      }
+    }
+  });
 }

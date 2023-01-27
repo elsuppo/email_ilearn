@@ -50,6 +50,7 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) 
           errors={errors} 
           setErrors={setErrors}
           users={users}
+          username={username}
         />
         <Messages
           messages={messages}
