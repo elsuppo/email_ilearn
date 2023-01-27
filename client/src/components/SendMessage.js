@@ -2,6 +2,8 @@ import { Autocomplete, TextField } from '@mui/material';
 
 const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipient, subject, setSubject, errors, users, username }) => {
 
+  console.log(recipient)
+
   return (
     <div className="p-4 d-flex justify-content-center w-25">
       <div>
@@ -14,6 +16,7 @@ const SendMessage = ({ valueMsg, setValueMsg, sendMessage, recipient, setRecipie
             value={recipient}
             onChange={(event, newRecipient) => setRecipient(newRecipient)}
             freeSolo
+            autoSelect={true}
             sx={{width: 250}}
           />
           <span className="text-danger">{errors.length > 0 ? errors[0].recipient : null}</span>
