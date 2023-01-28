@@ -24,12 +24,13 @@ wss.on('connection', function connection(ws) {
     switch (message.event) {
       case 'connection':
         await getInfo(ws, message.username);
+        await broadcastNewConnection(message);
         break;
       case 'message':
         const { sender, recipient, subject, messageDB, date, event } = message;
         try {
           await MessageModel.create({ sender, recipient, subject, messageDB, date, event });
-          broadcastMessage();
+          broadcastLastMessage();
         } catch (error) {
           console.log(error);
           handleErrors(ws, error);
@@ -47,11 +48,23 @@ const handleErrors = (ws, error) => {
   }
 }
 
-async function broadcastMessage() {
+async function broadcastLastMessage() {
   try {
     const lastMessage = await MessageModel.find().sort({ _id: -1 }).limit(1);
+    console.log(lastMessage);
     wss.clients.forEach(client => {
       client.send(JSON.stringify(lastMessage));
+    })
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function broadcastNewConnection(message) {
+  try {
+    console.log(message);
+    wss.clients.forEach(client => {
+      client.send(JSON.stringify([message]));
     })
   } catch (error) {
     console.log(error.message);

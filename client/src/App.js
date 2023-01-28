@@ -11,9 +11,10 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
+  const [newUsers, setNewUsers] = useState([]);
 
   function connect() {
-    socket.current = new WebSocket('wss://email-ilearn-server.onrender.com');
+    socket.current = new WebSocket('ws://localhost:5000');
 
     socket.current.onopen = () => {
       setConnected(true);
@@ -30,6 +31,8 @@ const App = () => {
         if (JSON.parse(data).length === 1) {
           if (JSON.parse(data)[0].event === 'error') {
             setErrors(prev => [...JSON.parse(data), ...prev]);
+          } else if (JSON.parse(data)[0].event === 'connection') {
+            setUsers(prev => [...prev, JSON.parse(data)[0].username]);
           } else {
             setMessages(prev => [...JSON.parse(data), ...prev]);
           }
