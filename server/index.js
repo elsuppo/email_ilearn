@@ -51,7 +51,6 @@ const handleErrors = (ws, error) => {
 async function broadcastLastMessage() {
   try {
     const lastMessage = await MessageModel.find().sort({ _id: -1 }).limit(1);
-    console.log(lastMessage);
     wss.clients.forEach(client => {
       client.send(JSON.stringify(lastMessage));
     })
@@ -62,7 +61,6 @@ async function broadcastLastMessage() {
 
 async function broadcastNewConnection(message) {
   try {
-    console.log(message);
     wss.clients.forEach(client => {
       client.send(JSON.stringify([message]));
     })
