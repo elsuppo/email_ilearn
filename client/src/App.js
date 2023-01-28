@@ -11,7 +11,6 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [errors, setErrors] = useState([]);
   const [users, setUsers] = useState([]);
-  const [newUsers, setNewUsers] = useState([]);
 
   function connect() {
     socket.current = new WebSocket('ws://localhost:5000');

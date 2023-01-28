@@ -9,6 +9,7 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) 
   const [valueMsg, setValueMsg] = useState('');
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     setErrors([]);
@@ -27,6 +28,7 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) 
     setRecipient('');
     setSubject('');
     setValueMsg('');
+    setStatus(true);
   }
 
   return (
@@ -35,10 +37,10 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) 
         <title>Send message</title>
       </Helmet>
       <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      alignItems={{ xs: 'center', sm: 'start' }}
-      justifyContent="center"
-    >
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems={{ xs: 'center', sm: 'start' }}
+        justifyContent="center"
+      >
         <SendMessage
           valueMsg={valueMsg}
           setValueMsg={setValueMsg}
@@ -47,10 +49,12 @@ const MessagesPage = ({ username, socket, messages, errors, setErrors, users }) 
           setRecipient={setRecipient}
           subject={subject}
           setSubject={setSubject}
-          errors={errors} 
+          errors={errors}
           setErrors={setErrors}
           users={users}
           username={username}
+          status={status}
+          setStatus={setStatus}
         />
         <Messages
           messages={messages}
