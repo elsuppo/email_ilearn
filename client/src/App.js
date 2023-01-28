@@ -13,7 +13,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
 
   function connect() {
-    socket.current = new WebSocket('ws://localhost:5000');
+    socket.current = new WebSocket('wss://email-ilearn-server.onrender.com');
 
     socket.current.onopen = () => {
       setConnected(true);
